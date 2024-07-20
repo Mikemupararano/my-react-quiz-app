@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Bar, Pie } from 'react-chartjs-2';
+import 'chart.js/auto';
 
 const Quiz = ({ questions }) => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -54,12 +56,45 @@ const Quiz = ({ questions }) => {
 
     if (showResult) {
         const correctAnswersCount = userAnswers.filter(answer => answer.isCorrect === 1).length;
+        const incorrectAnswersCount = questions.length - correctAnswersCount;
+
+        const pieData = {
+            labels: ['Correct', 'Incorrect'],
+            datasets: [
+                {
+                    data: [correctAnswersCount, incorrectAnswersCount],
+                    backgroundColor: ['#36A2EB', '#FF6384']
+                }
+            ]
+        };
+
+        const barData = {
+            labels: userAnswers.map((_, index) => `Q${index + 1}`),
+            datasets: [
+                {
+                    label: 'Results',
+                    data: userAnswers.map(answer => answer.isCorrect),
+                    backgroundColor: userAnswers.map(answer => answer.isCorrect ? '#36A2EB' : '#FF6384')
+                }
+            ]
+        };
+
         return (
             <div className='result-container'>
                 <h2>Quiz Completed!</h2>
                 <p>Your Score: {correctAnswersCount} / {questions.length}</p>
-                <button className='retake-btn' onClick={retakeQuiz}>Retake Quiz</button>
-                <button className='download-btn' onClick={downloadCSV}>Download Results as CSV</button>
+                <div className='charts-container'>
+                    <div className='chart'>
+                        <h3>Results Overview (Pie Chart)</h3>
+                        <Pie data={pieData} />
+                    </div>
+                    <div className='chart'>
+                        <h3>Results Per Question (Bar Chart)</h3>
+                        <Bar data={barData} />
+                    </div>
+                </div>
+                <button className="retake-btn" onClick={retakeQuiz}>Retake Quiz</button>
+                <button className="download-btn" onClick={downloadCSV}>Download Results as CSV</button>
             </div>
         );
     }
