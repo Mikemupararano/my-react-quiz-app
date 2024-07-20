@@ -58,8 +58,8 @@ const Quiz = ({ questions }) => {
             <div className='result-container'>
                 <h2>Quiz Completed!</h2>
                 <p>Your Score: {correctAnswersCount} / {questions.length}</p>
-                <button onClick={retakeQuiz}>Retake Quiz</button>
-                <button onClick={downloadCSV}>Download Results as CSV</button>
+                <button className='retake-btn' onClick={retakeQuiz}>Retake Quiz</button>
+                <button className='download-btn' onClick={downloadCSV}>Download Results as CSV</button>
             </div>
         );
     }

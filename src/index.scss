@@ -125,3 +125,37 @@ li.selected-answer {
     }
 }
 }
+.result-container {
+   
+    text-align: center;
+    margin-top: 40px;
+    background: #510D0A;
+    width: 600px;
+    color: #ffffff;
+    font-size: 36px;
+    h2 {
+        font-size: 50px;
+    }
+    .retake-btn {
+        background-color: #003566;
+        color: #ffffff;
+        width: 100px;
+        height: auto;
+        margin-right: 50px;
+        margin-bottom: 50px;
+        border: none;
+        border-radius: 9px;
+        font-size: 20px;
+    }
+    .download-btn {
+       background-color: #003566;
+        color: #ffffff;
+        width: 200px;
+        height: auto;
+        margin-right: 50px;
+        margin-bottom: 50px;
+        border: none;
+        border-radius: 9px;
+        font-size: 20px;  
+    }
+}
