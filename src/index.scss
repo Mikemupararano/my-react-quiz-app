@@ -105,3 +105,23 @@ li.selected-answer {
     color: white;
     background-color: red;
 }
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    button {
+    background-color: #003566;
+    border-radius: 9px;
+    font-size: 18px;
+    color: white;
+    padding: 10px 42px;
+    border: none;
+    outline: none;
+    margin-top: 15px;
+    cursor: pointer;
+    &:disabled {
+        background-color: #510D0A;
+        cursor: not-allowed;
+    }
+}
+}
