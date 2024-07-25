@@ -1,8 +1,135 @@
-// src/SurveyForm.jsx
 import React, { useState } from 'react';
+import { useDrag, useDrop, DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { initialQuestions, questionTemplate, initialSurveyDescription } from './constants';
 import { saveAs } from 'file-saver';
 import Papa from 'papaparse';
+import '../index.scss'; // Import your styles
+
+const ItemTypes = {
+  QUESTION: 'question',
+};
+
+const Question = ({ question, index, moveQuestion, handleInputChange, handleOptionChange, handleRemoveQuestion }) => {
+  const ref = React.useRef(null);
+
+  const [, drop] = useDrop({
+    accept: ItemTypes.QUESTION,
+    hover(item, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      moveQuestion(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.QUESTION,
+    item: { type: ItemTypes.QUESTION, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  drag(drop(ref));
+
+  return (
+    <div ref={ref} style={{ opacity: isDragging ? 0.5 : 1 }} className="question-container">
+      {question.type === 'multiple-choice' && (
+        <>
+          <input
+            type="text"
+            value={question.question}
+            onChange={(e) => handleInputChange(index, 'question', e.target.value)}
+            placeholder="Enter question text"
+          />
+          {question.options.map((option, oIndex) => (
+            <div key={oIndex}>
+              <input
+                type="text"
+                value={option}
+                onChange={(e) => handleOptionChange(index, oIndex, e.target.value)}
+                placeholder={`Option ${oIndex + 1}`}
+              />
+            </div>
+          ))}
+          <button onClick={() => handleRemoveQuestion(index)}>Remove Question</button>
+        </>
+      )}
+      {question.type === 'number' && (
+        <>
+          <input
+            type="text"
+            value={question.question}
+            onChange={(e) => handleInputChange(index, 'question', e.target.value)}
+            placeholder="Enter question text"
+          />
+          <input
+            type="number"
+            value={question.answer}
+            onChange={(e) => handleInputChange(index, 'answer', e.target.value)}
+            placeholder="Enter number"
+          />
+          <button onClick={() => handleRemoveQuestion(index)}>Remove Question</button>
+        </>
+      )}
+      {question.type === 'short-text' && (
+        <>
+          <input
+            type="text"
+            value={question.question}
+            onChange={(e) => handleInputChange(index, 'question', e.target.value)}
+            placeholder="Enter question text"
+          />
+          <input
+            type="text"
+            value={question.answer}
+            onChange={(e) => handleInputChange(index, 'answer', e.target.value)}
+            placeholder="Enter short text answer"
+          />
+          <button onClick={() => handleRemoveQuestion(index)}>Remove Question</button>
+        </>
+      )}
+      {question.type === 'long-text' && (
+        <>
+          <input
+            type="text"
+            value={question.question}
+            onChange={(e) => handleInputChange(index, 'question', e.target.value)}
+            placeholder="Enter question text"
+          />
+          <textarea
+            value={question.answer}
+            onChange={(e) => handleInputChange(index, 'answer', e.target.value)}
+            placeholder="Enter long text answer"
+          />
+          <button onClick={() => handleRemoveQuestion(index)}>Remove Question</button>
+        </>
+      )}
+    </div>
+  );
+};
 
 const SurveyForm = () => {
   const [questions, setQuestions] = useState(initialQuestions);
@@ -44,100 +171,37 @@ const SurveyForm = () => {
     saveAs(blob, 'survey_responses.csv');
   };
 
-  const renderQuestion = (question, qIndex) => {
-    switch (question.type) {
-      case 'multiple-choice':
-        return (
-          <div key={question.id} className="question-container">
-            <input
-              type="text"
-              value={question.question}
-              onChange={(e) => handleInputChange(qIndex, 'question', e.target.value)}
-              placeholder="Enter question text"
-            />
-            {question.options.map((option, oIndex) => (
-              <div key={oIndex}>
-                <input
-                  type="text"
-                  value={option}
-                  onChange={(e) => handleOptionChange(qIndex, oIndex, e.target.value)}
-                  placeholder={`Option ${oIndex + 1}`}
-                />
-              </div>
-            ))}
-            <button onClick={() => handleRemoveQuestion(qIndex)}>Remove Question</button>
-          </div>
-        );
-      case 'number':
-        return (
-          <div key={question.id} className="question-container">
-            <input
-              type="text"
-              value={question.question}
-              onChange={(e) => handleInputChange(qIndex, 'question', e.target.value)}
-              placeholder="Enter question text"
-            />
-            <input
-              type="number"
-              value={question.answer}
-              onChange={(e) => handleInputChange(qIndex, 'answer', e.target.value)}
-              placeholder="Enter number"
-            />
-            <button onClick={() => handleRemoveQuestion(qIndex)}>Remove Question</button>
-          </div>
-        );
-      case 'short-text':
-        return (
-          <div key={question.id} className="question-container">
-            <input
-              type="text"
-              value={question.question}
-              onChange={(e) => handleInputChange(qIndex, 'question', e.target.value)}
-              placeholder="Enter question text"
-            />
-            <input
-              type="text"
-              value={question.answer}
-              onChange={(e) => handleInputChange(qIndex, 'answer', e.target.value)}
-              placeholder="Enter short text answer"
-            />
-            <button onClick={() => handleRemoveQuestion(qIndex)}>Remove Question</button>
-          </div>
-        );
-      case 'long-text':
-        return (
-          <div key={question.id} className="question-container">
-            <input
-              type="text"
-              value={question.question}
-              onChange={(e) => handleInputChange(qIndex, 'question', e.target.value)}
-              placeholder="Enter question text"
-            />
-            <textarea
-              value={question.answer}
-              onChange={(e) => handleInputChange(qIndex, 'answer', e.target.value)}
-              placeholder="Enter long text answer"
-            />
-            <button onClick={() => handleRemoveQuestion(qIndex)}>Remove Question</button>
-          </div>
-        );
-      default:
-        return null;
-    }
+  const moveQuestion = (fromIndex, toIndex) => {
+    const updatedQuestions = [...questions];
+    const [movedQuestion] = updatedQuestions.splice(fromIndex, 1);
+    updatedQuestions.splice(toIndex, 0, movedQuestion);
+    setQuestions(updatedQuestions);
   };
 
   return (
-    <div className="survey-container">
-      <textarea
-        value={surveyDescription}
-        onChange={(e) => setSurveyDescription(e.target.value)}
-        placeholder="Enter survey description"
-      />
-      {questions.map((question, qIndex) => renderQuestion(question, qIndex))}
-      <button className="add-question-btn" onClick={handleAddQuestion}>Add Question</button>
-      <button className="reset-btn" onClick={handleReset}>Reset</button>
-      <button className="submit-btn" onClick={handleSubmit}>Submit & Download CSV</button>
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className="survey-container">
+        <textarea
+          value={surveyDescription}
+          onChange={(e) => setSurveyDescription(e.target.value)}
+          placeholder="Enter survey description"
+        />
+        {questions.map((question, index) => (
+          <Question
+            key={question.id}
+            index={index}
+            question={question}
+            moveQuestion={moveQuestion}
+            handleInputChange={handleInputChange}
+            handleOptionChange={handleOptionChange}
+            handleRemoveQuestion={handleRemoveQuestion}
+          />
+        ))}
+        <button className="add-question-btn" onClick={handleAddQuestion}>Add Question</button>
+        <button className="reset-btn" onClick={handleReset}>Reset</button>
+        <button className="submit-btn" onClick={handleSubmit}>Submit & Download CSV</button>
+      </div>
+    </DndProvider>
   );
 };
 

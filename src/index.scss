@@ -79,6 +79,10 @@ body {
 
 .survey-container .question-container {
   margin-bottom: 20px;
+  padding: 10px;
+  background: $bg-accent;
+  border-radius: 4px;
+  cursor: move;
 }
 
 .survey-container .question-container input[type="text"] {
