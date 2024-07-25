@@ -1,17 +1,14 @@
-import React from 'react'; // Ensure the 'R' in 'React' is capitalized
-import Quiz from './components/Quiz';
-import { jsQuizz } from './components/constants';
-import './App.scss';
+// src/App.jsx
+import React from 'react';
+import SurveyForm from './components/SurveyForm';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      
-       
-        <Quiz questions={jsQuizz.questions} />
-      </div>
-   
+      <h1>Digital Brand Survey Tool</h1>
+      <SurveyForm />
+    </div>
   );
-}
+};
 
 export default App;
