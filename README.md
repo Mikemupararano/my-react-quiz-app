@@ -1,9 +1,10 @@
-# Quiz Application
+# Survey Form Application
+
 ## Description
-A simple React-based quiz application that allows users to answer multiple-choice questions, see their results at the end, retake the quiz, and download their answers as a CSV file. The results are visualized using pie and bar charts.
+A React-based survey form application that allows users to add, reorder, and remove questions dynamically. Users can also update question details and download their responses as a CSV file. The survey form now supports drag-and-drop reordering of questions for better organization.
 
 ## Contents
-- [Quiz Application](#quiz-application)
+- [Survey Form Application](#survey-form-application)
   - [Description](#description)
   - [Contents](#contents)
   - [Features](#features)
@@ -13,24 +14,22 @@ A simple React-based quiz application that allows users to answer multiple-choic
   - [Credits](#credits)
 
 ## Features
-- Multiple-choice quiz with progress tracking.
-- Correct and incorrect answer feedback.
-- Final score display.
-- Option to retake the quiz.
-- Download quiz results as a CSV file.
-- Results visualization with pie and bar charts.
+- **Add Questions**: Add new questions to the survey form.
+- **Reorder Questions**: Drag and drop questions to reorder them in the survey form.
+- **Remove Questions**: Remove questions from the survey form.
+- **Edit Questions**: Modify question text and options.
+- **Submit and Download CSV**: Submit the form and download the responses as a CSV file.
+- **Reset Form**: Reset the form to its initial state.
 
 ## Screenshot
-Here is the quiz screenshot:
-![Quiz Application Screenshot](./src/assets/quiz-screenshot.png)
-And the results screenshot is here:
-![Quiz Application Screenshot](./src/assets/results-screenshot.png)
+Here is a screenshot of the survey form:
+![Survey Form Screenshot](./src/assets/survey-form-screenshot.png)
 
 ## Installation
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/quiz-app.git
-    cd quiz-app
+    git clone https://github.com/MikeMupararano/survey-form-app.git
+    cd survey-form-app
     ```
 2. Install dependencies:
     ```bash
@@ -43,18 +42,19 @@ And the results screenshot is here:
 
 ## Usage
 1. Open your browser and navigate to `http://localhost:3000`.
-2. Answer the quiz questions by clicking on the choices.
-3. Click "Next" to move to the next question.
-4. After answering all questions, you will see your results visualized with charts.
-5. Click "Retake Quiz" to start over or "Download Results as CSV" to save your answers.
+2. Add new questions by clicking "Add Question".
+3. Reorder questions by dragging and dropping them into the desired position.
+4. Edit question text and options as needed.
+5. Click "Remove Question" to delete a question.
+6. Click "Submit & Download CSV" to save the responses as a CSV file.
+7. Click "Reset" to restore the form to its initial state.
 
 ## Credits
 This project was developed using:
 - [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
-- [Chart.js](https://www.chartjs.org/) - Simple yet flexible JavaScript charting library.
-- [react-chartjs-2](https://github.com/reactchartjs/react-chartjs-2) - React wrapper for Chart.js.
-- [create-react-app](https://github.com/facebook/create-react-app) - Set up a modern web app by running one command.
+- [react-dnd](https://react-dnd.github.io/react-dnd/about) - Drag and Drop library for React.
+- [react-dnd-html5-backend](https://github.com/react-dnd/react-dnd-html5-backend) - HTML5 backend for react-dnd.
+- [PapaParse](https://www.papaparse.com/) - A powerful CSV library for JavaScript.
+- [file-saver](https://github.com/eligrey/FileSaver.js) - File saving utility.
 
 Developed by [Mike Thomas](https://github.com/Mikemupararano).
-
-
