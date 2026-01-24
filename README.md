@@ -21,9 +21,7 @@ A React-based survey form application that allows users to add, reorder, and rem
 - **Submit and Download CSV**: Submit the form and download the responses as a CSV file.
 - **Reset Form**: Reset the form to its initial state.
 
-## Screenshot
-Here is a screenshot of the survey form:
-![Survey Form Screenshot](./src/assets/survey-form-screenshot.png)
+
 
 ## Installation
 1. Clone the repository:
